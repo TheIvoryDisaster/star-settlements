@@ -1,0 +1,19 @@
+{
+  "project": "Starfield Colony Systems",
+  "phase": "feasibility",
+  "core_runtime": "base-game Papyrus/Creation Kit",
+  "optional_extension": "SFSE on Steam only (future, gated)",
+  "edition_for_authoring": "Steam Starfield installed",
+  "compatibility_target": [
+    "Steam",
+    "PC Game Pass",
+    "Xbox when APIs/assets permit"
+  ],
+  "prefix": "SCS_",
+  "first_spikes": [
+    "toolchain",
+    "workshop-events",
+    "npc-nav",
+    "save-persistence"
+  ]
+}

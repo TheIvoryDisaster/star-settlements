@@ -1,0 +1,41 @@
+# Bethesda/Starfield files and generated plugins
+# Only the original authored SCS_*.esm in plugins/ may be versioned.
+*.esm
+!plugins/SCS_*.esm
+*.esp
+*.esl
+*.ba2
+*.pex
+*.bsa
+*.lip
+*.pdb
+*.dll
+*.exe
+*.bak
+*.tmp
+*.log
+*.sav
+
+# Keep authored Papyrus source (*.psc), the authoritative SCS plugin (when created),
+# and source assets when licensing permits.
+# Do not add any extracted Bethesda game data.
+
+# Native builds, caches, outputs
+build/
+dist/
+out/
+.cache/
+__pycache__/
+*.pyc
+.vs/
+.vscode/*.local.json
+
+# Secrets and machine-local config
+.env
+.env.*
+settings.local.json
+*_local.ps1
+
+# Artist scratch files
+*.blend1
+*.blend2

@@ -1,0 +1,12 @@
+* text=auto
+*.psc text eol=crlf
+*.ps1 text eol=crlf
+*.md text eol=lf
+*.json text eol=lf
+*.nif binary
+*.mesh binary
+*.mat binary
+*.dds binary
+*.blend binary
+*.fbx binary
+*.glb binary
