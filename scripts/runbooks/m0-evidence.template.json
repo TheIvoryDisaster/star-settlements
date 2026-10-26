@@ -1,0 +1,18 @@
+{
+  "testContext": {
+    "ckVersionNotes": "",
+    "gameVersionNotes": "",
+    "gamePlatform": "PC Game Pass",
+    "deploymentMethod": "",
+    "testSaveIdentifier": "disposable test save only"
+  },
+  "manualResults": {
+    "ck_launch": { "status": "not_run", "notes": "" },
+    "master_load": { "status": "not_run", "notes": "" },
+    "plugin_save": { "status": "not_run", "notes": "" },
+    "papyrus_compile": { "status": "not_run", "notes": "" },
+    "gamepass_plugin_load": { "status": "not_run", "notes": "" },
+    "gamepass_script_execution": { "status": "not_run", "notes": "" },
+    "sfse_gamepass_observation": { "status": "not_run", "notes": "Optional research only; never an Xbox dependency." }
+  }
+}
