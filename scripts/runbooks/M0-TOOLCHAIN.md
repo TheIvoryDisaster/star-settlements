@@ -32,6 +32,19 @@ Record `pass`, `fail`, `blocked`, or `not_run`, with notes and reproducible evid
 
 If CK cannot launch or a test plugin cannot load, record `blocked`/`fail` without trying to hide it. Record application builds in `testContext`. Do not commit game executables, tools, Bethesda masters, private telemetry, compiled game assets, save files, or screenshots containing private account data.
 
+## Known setup issue: missing Steamworks DLL on Game Pass
+
+For PC Game Pass installations, the Steam Creation Kit package includes `Tools/SetupUtilities/ExportEditorDirToTarget.bat` and `Tools/SetupUtilities/Dependencies/steam_api64.dll`. If `steam_api64.dll` or `libxess.dll` is missing on launch:
+
+1. From the **Steam Creation Kit installation**, execute `Tools/SetupUtilities/ExportEditorDirToTarget.bat` with the **Game Pass Starfield `Content` directory** as its target. For example, `ExportEditorDirToTarget.bat "D:\\XboxGames\\Starfield\\Content"`.
+2. Launch the resulting `CreationKit.exe` **in the Game Pass `Content` folder**.
+3. If the target `CreationKit.exe` still reports missing `steam_api64.dll`, first check whether `Tools/SetupUtilities/Dependencies/steam_api64.dll` exists in the Steam CK package; if it does, check if it was copied alongside the launched executable. Prefer an intact installation and rerunning the provided setup utility before manually copying its bundled DLL into that same executable directory.
+4. If the bundled DLL is absent, use Steam's **Verify integrity of tool files** for Creation Kit. Never download DLLs from arbitrary websites, rename DLLs, or copy them to System32.
+
+This is a **community-reported workaround** and **not** Bethesda's officially supported CK configuration. Record observed results in the M0 test matrix; a launch alone does not prove functional editing, compilation, or Xbox compatibility.
+
+References: [Steam community CK setup discussion](https://steamcommunity.com/app/2722710/discussions/0/4849904176637348800/), [SteamDB distributed files](https://steamdb.info/depot/2722711/apps/), [Bethesda CK support policy](https://help.bethesda.net/app/answers/detail/a_id/73814/).
+
 ## Closeout
 
 1. Re-run `Invoke-M0Toolchain.ps1` after editing outcomes; attach the redacted JSON to a GitHub feasibility issue.
