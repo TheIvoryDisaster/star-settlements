@@ -6,9 +6,9 @@
 
 ## Immediate external constraints
 
-- Bethesda: Starfield Creation Kit can be downloaded free from Steam, but will not launch without Starfield **purchased and installed on Steam**. [Bethesda support](https://help.bethesda.net/app/answers/detail/a_id/73814/)
+- Steam distributes the Starfield Creation Kit. Although [Bethesda support](https://help.bethesda.net/app/answers/detail/a_id/73814/) describes a Steam Starfield requirement, the Starfield CK *Getting Started* documentation also includes a **Microsoft Store installation workflow** using `ExportEditorDirToTarget.bat` ([archived CK setup PDF](https://files.catbox.moe/4xycfq.pdf)). We will validate the actual CK/Game Pass setup before deciding whether a second runtime is necessary.
 - Official SFSE runtime supports Steam Starfield only, *not* Microsoft Store/Game Pass. [SFSE README](https://github.com/ianpatt/sfse) / [SFSE site](https://sfse.silverlock.org/).
-- Starfield Game Pass can use compatible Creations (e.g. Bard's beacon is listed on multiple platforms), but its presence on Game Pass does not change the authoring requirement above.
+- The user's Steam CK + PC Game Pass environment is our initial authoring/runtime test target. Script compilation, plugin load, and Xbox distribution are distinct checks and must be proven independently.
 
 ## Starfield base-game Papyrus surface (presence verified, runtime behavior not tested)
 
