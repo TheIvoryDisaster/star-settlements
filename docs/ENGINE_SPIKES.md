@@ -4,9 +4,9 @@ This is a prioritized research backlog. A tested feature requires exact Starfiel
 
 ## Spike 0 — toolchain bootstrap (blocker)
 
-- On Windows with **Steam-owned and installed** Starfield, launch the matching Creation Kit, load Starfield.esm, create a new minimal plugin, save it, compile a trivial `Debug.Trace` Papyrus test, launch modded Steam Starfield.
-- Separately verify whether the *resulting normal ESM/Papyrus Creation* loads on Game Pass via the supported mod install/distribution path. **Do not require SFSE.**
-- **Pass:** CK start, plugin save, Papyrus compile, mod active in Steam, plus Game Pass deployment check when possible.
+- On the existing Windows setup (Steam Creation Kit + PC Game Pass Starfield), use the Creation Kit's documented Microsoft Store setup procedure as needed. Load `Starfield.esm`, save a minimal plugin, compile `SCS_CompileSmokeTest.psc` via `scripts/Invoke-PapyrusCompile.ps1`, and test on a disposable Game Pass save.
+- Verify that the resulting normal ESM/Papyrus Creation loads and executes on Game Pass using a documented installation method. Keep Steam runtime and Xbox console compatibility as separate verification tracks. **Do not require SFSE.**
+- **Pass:** CK start, master load, plugin save, Papyrus compile, and observable in-game execution on PC Game Pass; save exact version and diagnostic evidence.
 - **Stop:** CK cannot launch or binary/toolchain version mismatch.
 
 ## Spike 1 — workshop object lifetime
