@@ -29,6 +29,14 @@ $gameRoot = (Resolve-Path -LiteralPath $GameRoot).Path
 $compiler = Get-FilePath (Join-Path $ckRoot 'Tools\Papyrus Compiler\PapyrusCompiler.exe')
 $source = Get-FilePath $SourceFile
 if ([IO.Path]::GetExtension($source).ToLowerInvariant() -ne '.psc') { throw "Expected .psc: $source" }
+# Avoid invoking Bethesda's compiler for a predictable script identity mismatch.
+$header = Select-String -LiteralPath $source -Pattern '^\s*Scriptname\s+([^\s;]+)' | Select-Object -First 1
+if ($null -eq $header) { throw "No Scriptname declaration found in: $source" }
+$declaredName = $header.Matches[0].Groups[1].Value
+$fileScriptName = [IO.Path]::GetFileNameWithoutExtension($source)
+if ($declaredName -ine $fileScriptName) {
+ throw "Papyrus script identity mismatch: file '$fileScriptName.psc' declares Scriptname '$declaredName'. Rename the file or change the declaration."
+}
 $out = $OutputDirectory
 if (-not [IO.Path]::IsPathRooted($out)) { $out = Join-Path $repoRoot $out }
 New-Item -ItemType Directory -Path $out -Force | Out-Null
@@ -52,7 +60,9 @@ if ([string]::IsNullOrWhiteSpace($FlagsFile)) {
   if (-not [string]::IsNullOrWhiteSpace($FlagsFile)) { break }
  }
 }
-if ([string]::IsNullOrWhiteSpace($FlagsFile)) { throw 'Starfield_Papyrus_Flags.flg not found. Extract sources or specify -FlagsFile.' }
+if ([string]::IsNullOrWhiteSpace($FlagsFile)) {
+ throw "Starfield_Papyrus_Flags.flg not found. Extract the CONTENTS of Tools\ContentResources.zip\Scripts directly to Data\Scripts\Source under the ACTIVE Starfield CK/game root (no extra Scripts folder), or specify -FlagsFile."
+}
 $flags = Get-FilePath $FlagsFile
 $pex = Join-Path $out ([IO.Path]::GetFileNameWithoutExtension($source) + '.pex')
 $priorTime = $null
