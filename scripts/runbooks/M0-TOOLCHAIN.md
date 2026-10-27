@@ -68,6 +68,42 @@ Alternatively, copy the same `.psc` into the editor's active `Data\\Scripts\\Sou
 
 Sources: [Starfield Creation Kit setup materials](https://files.catbox.moe/4xycfq.pdf), [Starfield Papyrus command-line resources](https://www.nexusmods.com/starfield/mods/10320).
 
+## Troubleshooting: compiler identity or missing flags
+
+Example error:
+
+```text
+Compiling "TestScript.psc"...
+<unknown>(0,0): Unable to find flags file: Starfield_Papyrus_Flags.flg
+...TestScript.psc(0,0): filename does not match script name: scs_compilesmoketest
+```
+
+Two **independent** failures:
+
+1. Papyrus requires `TestScript.psc` to declare `Scriptname TestScript`. Our repository's smoke test declares `Scriptname SCS_CompileSmokeTest`, so its filename must be `SCS_CompileSmokeTest.psc`. If the CK script manager created an attached `TestScript`, rename/recreate the CK script record consistently before compiling; changing only the file on disk may leave an attachment pointing to the wrong name.
+2. The active editor/compiler lacks the `Starfield_Papyrus_Flags.flg` input, usually because the CK source archives haven't been extracted into the active game `Data\Scripts\Source`.
+
+For a standard PC Game Pass location:
+
+```powershell
+$src = 'C:\XboxGames\Starfield\Content\Data\Scripts\Source'
+Test-Path "$src\Starfield_Papyrus_Flags.flg"
+Test-Path "$src\ObjectReference.psc"
+```
+
+Both should be true. If not, find `Tools\ContentResources.zip` in the Creation Kit distribution. **Copy the files and subdirectories INSIDE its `Scripts` folder into the active `Data\Scripts\Source` folder.** Avoid an extra `Source\Scripts` nesting layer. Ensure `CreationKitCustom.ini` for the editor being launched contains:
+
+```ini
+[Papyrus]
+sScriptSourceFolder="Data/Scripts/Source"
+```
+
+Restart Creation Kit before retrying manual compilation. If compiling via `Invoke-PapyrusCompile.ps1`, the wrapper now checks that the filename matches the `Scriptname` header and looks up `-f` in both CK and game roots; override with `-FlagsFile` if the source tree is laid out differently.
+
+A successful `.pex` build is a compiler test, not yet an in-game script execution test.
+
+References: [Steam Creation Kit discussion](https://steamcommunity.com/app/2722710/discussions/0/4509877188788079155/), [Nexus CK troubleshooting](https://forums.nexusmods.com/topic/13492957-starfield_papyrus_flags/).
+
 ## Closeout
 
 1. Re-run `Invoke-M0Toolchain.ps1` after editing outcomes; attach the redacted JSON to a GitHub feasibility issue.
