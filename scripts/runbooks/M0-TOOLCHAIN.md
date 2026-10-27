@@ -41,9 +41,32 @@ For PC Game Pass installations, the Steam Creation Kit package includes `Tools/S
 3. If the target `CreationKit.exe` still reports missing `steam_api64.dll`, first check whether `Tools/SetupUtilities/Dependencies/steam_api64.dll` exists in the Steam CK package; if it does, check if it was copied alongside the launched executable. Prefer an intact installation and rerunning the provided setup utility before manually copying its bundled DLL into that same executable directory.
 4. If the bundled DLL is absent, use Steam's **Verify integrity of tool files** for Creation Kit. Never download DLLs from arbitrary websites, rename DLLs, or copy them to System32.
 
-This is a **community-reported workaround** and **not** Bethesda's officially supported CK configuration. Record observed results in the M0 test matrix; a launch alone does not prove functional editing, compilation, or Xbox compatibility.
+This setup is documented in the Starfield Creation Kit *Getting Started* materials under "Setting up the Starfield Creation Kit for the Microsoft Store Version" (see [archived PDF, pages 1–2](https://files.catbox.moe/4xycfq.pdf)). Record actual behavior in the M0 test matrix; a successful launch does not prove editing, compilation, or Xbox compatibility.
 
 References: [Steam community CK setup discussion](https://steamcommunity.com/app/2722710/discussions/0/4849904176637348800/), [SteamDB distributed files](https://steamdb.info/depot/2722711/apps/), [Bethesda CK support policy](https://help.bethesda.net/app/answers/detail/a_id/73814/).
+
+## Compile the Papyrus smoke test
+
+The Starfield Creation Kit ships its own compiler under `Tools\\Papyrus Compiler\\PapyrusCompiler.exe`. Its script reference source comes from `Tools\\ContentResources.zip` (`Scripts/`), extracted to `Data\\Scripts\\Source` under the active Starfield/CK directory. Preserve folder structure, including `Base/` and the `Starfield_Papyrus_Flags.flg` file. The active `CreationKitCustom.ini` should contain:
+
+```ini
+[Papyrus]
+sScriptSourceFolder="Data/Scripts/Source"
+```
+
+This repository includes `src/papyrus/SCS_CompileSmokeTest.psc` and a command-line harness that writes a compiled `.pex` and capture files **only** to the ignored `out/papyrus` folder:
+
+```powershell
+.\\scripts\\Invoke-PapyrusCompile.ps1 -CreationKitRoot 'D:\\SteamLibrary\\steamapps\\common\\Starfield' -GameRoot 'E:\\XboxGames\\Starfield\\Content'
+```
+
+Set those paths to the actual Steam CK installation and active PC Game Pass game directory. If all required CK assets were copied to the Game Pass location, `-CreationKitRoot` can point there instead. Use `-FlagsFile` to override flag-file discovery if your installation is arranged differently. `out/papyrus/compile-report.json`, `compiler.stdout.txt`, and `compiler.stderr.txt` capture the result.
+
+Alternatively, copy the same `.psc` into the editor's active `Data\\Scripts\\Source` folder, open **Gameplay → Papyrus Script Manager**, locate the script, and select **Compile**. The editor can produce `Data\\Scripts\\SCS_CompileSmokeTest.pex`.
+
+**What a pass means:** The CK compiler accepts this original `ObjectReference` script and emits a new `.pex`. This does *not* mean `OnActivate` has run: attach the script to a suitable object in a saved plugin and activate that object in-game for the separate runtime test. Do not copy `.pex` into the live game automatically during this spike.
+
+Sources: [Starfield Creation Kit setup materials](https://files.catbox.moe/4xycfq.pdf), [Starfield Papyrus command-line resources](https://www.nexusmods.com/starfield/mods/10320).
 
 ## Closeout
 
